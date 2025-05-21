@@ -5,7 +5,11 @@ const moment = require("moment");
 
 
 // 🔹 Step 1: Initialize Firebase
-const serviceAccount = require("./tsterapp-fcf1b-firebase-adminsdk-ig5rv-3cb042b28e.json");
+const fs = require('fs');
+
+// Carga la key desde archivo temporal generado por el workflow
+const serviceAccount = require('./firebase-key.json');
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

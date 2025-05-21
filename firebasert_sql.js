@@ -3,7 +3,10 @@ const sql = require("mssql");
 const admin = require("firebase-admin");
 
 // Initialize Firebase
-const serviceAccount = require("./tsterapp-fcf1b-firebase-adminsdk-ig5rv-3cb042b28e.json"); // Ensure correct filename
+const fs = require('fs'); // Necesario si luego vas a manipular el archivo
+const serviceAccount = require('./firebase-key.json');
+
+//const serviceAccount = require("./tsterapp-fcf1b-firebase-adminsdk-ig5rv-3cb042b28e.json"); // Ensure correct filename
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://tsterapp-fcf1b-default-rtdb.firebaseio.com/",

@@ -2,8 +2,8 @@ name: Sincronización diaria Firebase-SQL
 
 on:
   schedule:
-    - cron: '0 6 * * *'     # Cada día a las 6 AM UTC
-  workflow_dispatch:         # También se puede lanzar manualmente
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
 jobs:
   run-script:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Crear archivo .env desde los Secrets
+      - name: Crear archivo .env desde Secrets
         run: |
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
@@ -28,5 +28,8 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      - name: Ejecutar script
+      - name: Ejecutar primer script (SQL <-> Firebase)
         run: node sql_fire_2wsync.js
+
+      - name: Ejecutar segundo script (Actualizar WorkDonevN)
+        run: node firebasert_sql.js

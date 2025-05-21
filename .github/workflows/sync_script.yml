@@ -2,8 +2,8 @@ name: Sincronización diaria Firebase-SQL
 
 on:
   schedule:
-    - cron: '0 6 * * *'
-  workflow_dispatch:
+    - cron: '0 6 * * *'     # Todos los días a las 6:00 AM UTC
+  workflow_dispatch:         # Permite ejecución manual desde GitHub
 
 jobs:
   run-script:
@@ -24,6 +24,10 @@ jobs:
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+
+      - name: Crear archivo de clave Firebase
+        run: |
+          echo '${{ secrets.FIREBASE_KEY }}' > firebase-key.json
 
       - name: Instalar dependencias
         run: npm install

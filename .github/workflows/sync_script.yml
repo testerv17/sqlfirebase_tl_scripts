@@ -1,0 +1,32 @@
+name: Sincronización diaria Firebase-SQL
+
+on:
+  schedule:
+    - cron: '0 6 * * *'     # Cada día a las 6 AM UTC
+  workflow_dispatch:         # También se puede lanzar manualmente
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Crear archivo .env desde los Secrets
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar script
+        run: node sql_fire_2wsync.js

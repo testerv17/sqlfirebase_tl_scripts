@@ -29,7 +29,7 @@ jobs:
         run: npm install
 
       - name: Ejecutar primer script (SQL <-> Firebase)
-        run: node sql_fire_2wsync.js
+        run: node sync_sql_fire2w.js
 
       - name: Ejecutar segundo script (Actualizar WorkDonevN)
         run: node firebasert_sql.js

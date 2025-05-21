@@ -5,10 +5,10 @@ const moment = require("moment");
 
 
 // 🔹 Step 1: Initialize Firebase
-const fs = require('fs');
-
-// Carga la key desde archivo temporal generado por el workflow
+// Initialize Firebase
+const fs = require('fs'); // Necesario si luego vas a manipular el archivo
 const serviceAccount = require('./firebase-key.json');
+
 
 
 admin.initializeApp({

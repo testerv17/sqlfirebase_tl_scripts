@@ -1,21 +1,18 @@
 require('dotenv').config();
 const sql = require("mssql");
 const admin = require("firebase-admin");
+const fs = require('fs');
 
-// Initialize Firebase
-const fs = require('fs'); // Necesario si luego vas a manipular el archivo
 const serviceAccount = require('./firebase-key.json');
 
-//const serviceAccount = require("./tsterapp-fcf1b-firebase-adminsdk-ig5rv-3cb042b28e.json"); // Ensure correct filename
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://tsterapp-fcf1b-default-rtdb.firebaseio.com/",
 });
 
 const db = admin.database();
-const ref = db.ref("WorkDone"); // Firebase bucket
+const ref = db.ref("WorkDone");
 
-// SQL Server Configuration
 const sqlConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
@@ -61,7 +58,6 @@ async function fetchDataAndUpdateWorkDonevN() {
         WHEN MATCHED THEN 
             UPDATE SET 
                 causaFalla = @causaFalla,
-                
                 estatus = @estatus,
                 folio = @folio,
                 fechaAtendido = @fechaAtendido,
@@ -78,7 +74,6 @@ async function fetchDataAndUpdateWorkDonevN() {
 
       const request = new sql.Request();
       request.input("causaFalla", sql.NVarChar, record.causaFalla || null);
-      //request.input("colonia", sql.NVarChar, record.colonia || null);
       request.input("estatus", sql.NVarChar, record.estatus || null);
       request.input("folio", sql.Int, folio);
       request.input("folioReporte", sql.NVarChar, record.folioReporte);
@@ -102,8 +97,9 @@ async function fetchDataAndUpdateWorkDonevN() {
   }
 }
 
-// Run every 60 seconds
-setInterval(fetchDataAndUpdateWorkDonevN, 60000);
+// Ejecutar solo una vez (para GitHub Actions)
+fetchDataAndUpdateWorkDonevN();
+);
 
 // Initial execution
 fetchDataAndUpdateWorkDonevN();

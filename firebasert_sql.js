@@ -92,14 +92,10 @@ async function fetchDataAndUpdateWorkDonevN() {
     console.log("Data synchronization to WorkDonevN complete.");
   } catch (err) {
     console.error("Error:", err);
-  } finally {
+   } finally {
     sql.close();
   }
 }
 
-// Ejecutar solo una vez (para GitHub Actions)
-fetchDataAndUpdateWorkDonevN();
-);
-
-// Initial execution
+// Ejecutar una sola vez para GitHub Actions
 fetchDataAndUpdateWorkDonevN();

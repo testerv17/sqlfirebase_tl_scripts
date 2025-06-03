@@ -264,8 +264,6 @@ updateRequest.input("FechaInicio", sql.NVarChar(100), fechaInicioFormatted);
 }
 
 
-// 🔁 Run every 60 seconds
-setInterval(syncSqlAndFirebase, 60000);
-
-// ▶️ Initial run
+// ▶️ Run once only (GitHub Actions)
 syncSqlAndFirebase();
+

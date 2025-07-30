@@ -1,0 +1,35 @@
+name: Sync SQL <-> Firebase (Bidireccional)
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Todos los días a las 6:00 AM UTC
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Crear archivo .env
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+
+      - name: Crear firebase-key.json
+        run: echo '${{ secrets.FIREBASE_KEY }}' > firebase-key.json
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar script principal (sync_sql_fire2w.js)
+        run: node sync_sql_fire2w.js

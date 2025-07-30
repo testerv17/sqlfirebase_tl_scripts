@@ -5,11 +5,7 @@ const moment = require("moment");
 
 
 // 🔹 Step 1: Initialize Firebase
-// Initialize Firebase
-const fs = require('fs'); // Necesario si luego vas a manipular el archivo
-const serviceAccount = require('./firebase-key.json');
-
-
+const serviceAccount = require("./tsterapp-fcf1b-firebase-adminsdk-ig5rv-3cb042b28e.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -110,10 +106,10 @@ async function pullSqlToFirebase() {
 
   const result = await sql.query(`
     SELECT
-      ID, Status, Municipio, CuadrillaName, TrabajoRealizado, LumAsigID,
+      ID, Status, Municipio, CuadrillaName,LumAsigID,
       FechaCreacion, FechaAsignacion, FechaInicio, FechaConclusion, Origen,
-      Asigno, FolioReporte, Colonia, Calle, Numero, EntreCalles,
-      ReferenciaProx, Comentarios, Extra, Latitud, Longitud, trabajo,
+      Asigno, FolioReporte, Colonia, Calle, Numero,
+       Comentarios, Extra, Latitud, Longitud, trabajo,
       extra_cap_pot, extra_tipo, extra_rpu
     FROM Reportes_test
   `);
@@ -264,6 +260,8 @@ updateRequest.input("FechaInicio", sql.NVarChar(100), fechaInicioFormatted);
 }
 
 
-// ▶️ Run once only (GitHub Actions)
-syncSqlAndFirebase();
+// 🔁 Run every 60 seconds
+setInterval(syncSqlAndFirebase, 60000);
 
+// ▶️ Initial run
+syncSqlAndFirebase();

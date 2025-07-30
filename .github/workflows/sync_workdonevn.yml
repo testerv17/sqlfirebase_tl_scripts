@@ -1,0 +1,36 @@
+name: Sync Firebase → SQL (WorkDonevN)
+
+on:
+  schedule:
+    - cron: '5 6 * * *'  # Todos los días a las 6:05 AM UTC
+  workflow_dispatch:
+
+jobs:
+  sync-workdone:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Crear archivo .env
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+
+      - name: Crear firebase-key.json
+        run: echo '${{ secrets.FIREBASE_KEY }}' > firebase-key.json
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar script firebasert_sql.js
+        run: node firebasert_sql.js
+

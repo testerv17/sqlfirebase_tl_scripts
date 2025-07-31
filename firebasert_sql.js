@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 
 // Initialize Firebase
 const serviceAccount = require('./firebase-key.json');
- Ensure correct filename
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://tsterapp-fcf1b-default-rtdb.firebaseio.com/",
